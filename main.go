@@ -1,0 +1,31 @@
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	problem := os.Args[1]
+	var	fileName string
+	if len(os.Args) > 2 {
+		fileName = os.Args[2]
+	} else {
+		fileName = "input/day" + problem + ".txt"
+	}
+	input := ReadLines(fileName)
+
+	fmt.Printf("Running problem: %s with file: %s\n", problem, fileName)
+	switch problem {
+		case "01":
+			Day01(input)
+		case "02":
+			Day02(input)
+		case "03":
+			Day03(input)
+		default:
+			fmt.Printf("Problem %s not implemented\n", problem)
+	}
+
+}
+
