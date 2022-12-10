@@ -1,5 +1,17 @@
 package main
 
+type void struct {}
+
+// Get all unique values from the slice as a map
+func Set[T comparable](s []T) map[T]void {
+	result := make(map[T]void)
+	var v void
+	for _, val := range s {
+		result[val] = v
+	}
+	return result
+}
+
 func Contains[T comparable](s []T, e T) bool {
     for _, v := range s {
         if v == e {

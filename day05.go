@@ -33,7 +33,7 @@ func day05_part1(input []string) string {
 	for _, move := range input[i+1:] {
 		c, f, t := parseCommand(move)
 		source := stacks[f]
-		stacks[t] = stacks[t] + reverse(source[len(source) - c:])
+		stacks[t] = stacks[t] + Reverse(source[len(source) - c:])
 		stacks[f] = source[:len(source) - c]
 	}
 	return getResult(stacks)
@@ -65,13 +65,5 @@ func getResult(stacks map[int]string) string {
 		result += s[len(s)-1:] 
 	}
 	return result
-}
-
-func reverse(s string) string {
-	rns := []rune(s)
-	for i, j := 0, len(rns)-1; i < j; i, j = i+1, j-1 {
-		rns[i], rns[j] = rns[j], rns[i]
-	}
-	return string(rns)
 }
 
