@@ -5,7 +5,6 @@ import (
 )
 
 func Day06(input []string) {
-
 	fmt.Println("Part 1: ", day06_part1(input[0]))
 	fmt.Println("Part 2: ", day06_part2(input[0]))
 }
