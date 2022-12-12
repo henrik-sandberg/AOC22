@@ -13,53 +13,34 @@ type node struct {
 	value int
 }
 
-
 func Day07(input []string) {
 	root := buildGraph(input)
-	resultPart1, usedSpace := day07_part1(&root)
-	fmt.Println("Part 1: ", resultPart1)
-
-	unusedSpace := 70000000 - usedSpace
-	spaceToFree := 30000000 - unusedSpace
-	resultPart2, _ := day07_part2(&root, spaceToFree)
-	fmt.Println("Part 2: ", resultPart2)
+	fmt.Println("Part 1: ", day07_part1(&root))
+	fmt.Println("Part 2: ", day07_part2(&root, root.value - 40000000))
 }
 
-// Calculate result of part 1
-// Returns a tuple of result (if satisfying the requirement of size limit)
-// and the running total of space used in subfolders
-func day07_part1(n *node) (int, int) {
-	limit := 100000
+func day07_part1(n *node) int {
 	result := 0
-	runningTotal := n.value
+	if n.value <= 100000 {
+		result = n.value
+	}
 	for _, v := range n.children {
-		res, total := day07_part1(v)
-		result += res
-		runningTotal += total
+		result += day07_part1(v)
 	}
-	if runningTotal <= limit {
-		result += runningTotal
-	}
-	return result, runningTotal
+	return result
 }
 
-// Calculate result of part 2
-// Returns a tuple of best result per folder (or MaxInt if not satisfying the requirement)
-// and the running total of space used in subfolders
-func day07_part2(n *node, spaceToFree int) (int, int) {
+func day07_part2(n *node, spaceToFree int) int {
 	result := math.MaxInt
-	runningTotal := n.value
+	if n.value < result && n.value >= spaceToFree {
+		result = n.value
+	}
 	for _, v := range n.children {
-		res, total := day07_part2(v, spaceToFree)
-		runningTotal += total
-		if res >= spaceToFree && res < result {
+		if res := day07_part2(v, spaceToFree); res < result && res >= spaceToFree {
 			result = res
 		}
 	}
-	if runningTotal >= spaceToFree && runningTotal < result {
-		result = runningTotal
-	}
-	return result, runningTotal
+	return result
 }
 
 func buildGraph(input[] string) node {
@@ -80,11 +61,13 @@ func buildGraph(input[] string) node {
 			}
 		} else if arr[0] == "dir" {
 			name := arr[1]
-			newNode := node{name: name, children: map[string]*node{}}
-			stack[len(stack)-1].children[name] = &newNode 
+			stack[len(stack)-1].children[name] = &node{name: name, children: map[string]*node{}}
 		} else {
 			size, _ := strconv.Atoi(arr[0])
-			stack[len(stack)-1].value += size
+			// Back propagating file size to root makes filtering much easier later
+			for _, n := range stack {
+				n.value += size
+			}
 		}
 	}
 	return *stack[0]
