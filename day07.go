@@ -49,13 +49,13 @@ func buildGraph(input[] string) node {
 		arr := strings.Split(line, " ")
 		if arr[0] == "$" {
 			if cmd := arr[1]; cmd == "cd" {
-				if arr[2] == ".." {
+				if target := arr[2]; target == ".." {
 					stack = stack[:len(stack)-1]
-				} else if arr[2] == "/" {
-					root := node{name: "/", children: map[string]*node{}}
+				} else if target == "/" {
+					root := node{name: target, children: map[string]*node{}}
 					stack = append(stack, &root)
 				} else {
-					directory := stack[len(stack)-1].children[arr[2]]
+					directory := stack[len(stack)-1].children[target]
 					stack = append(stack, directory)
 				}
 			}
