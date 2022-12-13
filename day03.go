@@ -9,7 +9,7 @@ func Day03(input []string) {
 	fmt.Println("Part 2: ", day03_part2(input))
 }
 
-func day03_part1(input []string) (int) {
+func day03_part1(input []string) int {
 	result := 0
 
 	for _, bag := range input {
@@ -20,7 +20,7 @@ func day03_part1(input []string) (int) {
 	return result
 }
 
-func day03_part2(input []string) (int) {
+func day03_part2(input []string) int {
 	result := 0
 	for i := 0; i < len(input); i += 3 {
 		common := Intersect([]rune(input[i]), []rune(input[i+1]))
@@ -30,7 +30,7 @@ func day03_part2(input []string) (int) {
 	return result
 }
 
-func calculatePriority(chars []rune) (int) {
+func calculatePriority(chars []rune) int {
 	if len(chars) != 1 {
 		fmt.Printf("Invalid number of chars in %v\n", chars)
 	}
@@ -41,4 +41,4 @@ func calculatePriority(chars []rune) (int) {
 		num -= 38
 	}
 	return num
-}	
+}

@@ -6,7 +6,7 @@ import (
 )
 
 type game_option struct {
-	name string
+	name  string
 	beats string
 	loses string
 	value int
@@ -27,7 +27,7 @@ func Day02(input []string) {
 	fmt.Println("Part 2: ", day02_part2(input, game_options))
 }
 
-func day02_part1(input []string, game_options map[string]game_option) (int) {
+func day02_part1(input []string, game_options map[string]game_option) int {
 	mappings := make(map[string]string)
 	mappings["A"] = "rock"
 	mappings["B"] = "paper"
@@ -46,7 +46,7 @@ func day02_part1(input []string, game_options map[string]game_option) (int) {
 	return score
 }
 
-func day02_part2(input []string, game_options map[string]game_option) (int) {
+func day02_part2(input []string, game_options map[string]game_option) int {
 	mappings := make(map[string]string)
 	mappings["A"] = "rock"
 	mappings["B"] = "paper"
@@ -65,11 +65,11 @@ func day02_part2(input []string, game_options map[string]game_option) (int) {
 			us = game_options[they.loses]
 		}
 		score += calculate_score(us, they)
-	}	
+	}
 	return score
 }
 
-func calculate_score(us game_option, they game_option) (int) {
+func calculate_score(us game_option, they game_option) int {
 	// Score: 0 if lost, 3 if draw, 6 if win
 	// plus value
 	if us.name == they.name {
@@ -80,4 +80,3 @@ func calculate_score(us game_option, they game_option) (int) {
 		return us.value
 	}
 }
-

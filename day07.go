@@ -8,15 +8,15 @@ import (
 )
 
 type node struct {
-	name string
+	name     string
 	children map[string]*node
-	value int
+	value    int
 }
 
 func Day07(input []string) {
 	root := buildGraph(input)
 	fmt.Println("Part 1: ", day07_part1(&root))
-	fmt.Println("Part 2: ", day07_part2(&root, root.value - 40000000))
+	fmt.Println("Part 2: ", day07_part2(&root, root.value-40000000))
 }
 
 func day07_part1(n *node) int {
@@ -43,7 +43,7 @@ func day07_part2(n *node, spaceToFree int) int {
 	return result
 }
 
-func buildGraph(input[] string) node {
+func buildGraph(input []string) node {
 	stack := []*node{}
 	for _, line := range input {
 		arr := strings.Split(line, " ")
@@ -72,4 +72,3 @@ func buildGraph(input[] string) node {
 	}
 	return *stack[0]
 }
-

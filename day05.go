@@ -16,11 +16,11 @@ func createStacks(input []string) (int, map[int]string) {
 	for lineNumber, line := range input {
 		if strings.Contains(line, "[") {
 			for i := 0; i*4 < len(line); i++ {
-				if crate := line[i*4:i*4+3]; strings.TrimSpace(crate) != "" {
+				if crate := line[i*4 : i*4+3]; strings.TrimSpace(crate) != "" {
 					stacks[i+1] = string(crate[1]) + stacks[i+1]
 				}
 			}
-		} 
+		}
 		if line == "" {
 			return lineNumber, stacks
 		}
@@ -33,8 +33,8 @@ func day05_part1(input []string) string {
 	for _, move := range input[i+1:] {
 		c, f, t := parseCommand(move)
 		source := stacks[f]
-		stacks[t] = stacks[t] + Reverse(source[len(source) - c:])
-		stacks[f] = source[:len(source) - c]
+		stacks[t] = stacks[t] + Reverse(source[len(source)-c:])
+		stacks[f] = source[:len(source)-c]
 	}
 	return getResult(stacks)
 }
@@ -44,8 +44,8 @@ func day05_part2(input []string) string {
 	for _, move := range input[i+1:] {
 		c, f, t := parseCommand(move)
 		source := stacks[f]
-		stacks[t] = stacks[t] + source[len(source) - c:]
-		stacks[f] = source[:len(source) - c]
+		stacks[t] = stacks[t] + source[len(source)-c:]
+		stacks[f] = source[:len(source)-c]
 	}
 	return getResult(stacks)
 }
@@ -59,11 +59,10 @@ func parseCommand(command string) (int, int, int) {
 }
 
 func getResult(stacks map[int]string) string {
- 	result := ""
+	result := ""
 	for i := 0; i < len(stacks); i++ {
 		s := stacks[i+1]
-		result += s[len(s)-1:] 
+		result += s[len(s)-1:]
 	}
 	return result
 }
-
