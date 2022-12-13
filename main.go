@@ -7,7 +7,7 @@ import (
 
 func main() {
 	problem := os.Args[1]
-	var	fileName string
+	var fileName string
 	if len(os.Args) > 2 {
 		fileName = os.Args[2]
 	} else {
@@ -17,23 +17,24 @@ func main() {
 
 	fmt.Printf("Running problem: %s with file: %s\n", problem, fileName)
 	switch problem {
-		case "01":
-			Day01(input)
-		case "02":
-			Day02(input)
-		case "03":
-			Day03(input)
-		case "04":
-			Day04(input)
-		case "05":
-			Day05(input)
-		case "06":
-			Day06(input)
-		case "07":
-			Day07(input)
-		default:
-			fmt.Printf("Problem %s not implemented\n", problem)
+	case "01":
+		Day01(input)
+	case "02":
+		Day02(input)
+	case "03":
+		Day03(input)
+	case "04":
+		Day04(input)
+	case "05":
+		Day05(input)
+	case "06":
+		Day06(input)
+	case "07":
+		Day07(input)
+	case "08":
+		Day08(input)
+	default:
+		fmt.Printf("Problem %s not implemented\n", problem)
 	}
 
 }
-
