@@ -1,13 +1,10 @@
 package main
 
-type void struct{}
-
 // Get all unique values from the slice as a map
-func Set[T comparable](s []T) map[T]void {
-	result := make(map[T]void)
-	var v void
+func Set[T comparable](s []T) map[T]interface{} {
+	result := make(map[T]interface{})
 	for _, val := range s {
-		result[val] = v
+		result[val] = nil
 	}
 	return result
 }

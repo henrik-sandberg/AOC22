@@ -5,16 +5,8 @@ import (
 )
 
 func Day06(input []string) {
-	fmt.Println("Part 1: ", day06_part1(input[0]))
-	fmt.Println("Part 2: ", day06_part2(input[0]))
-}
-
-func day06_part1(input string) int {
-	return findIndexOfDistinctCharacters(input, 4)
-}
-
-func day06_part2(input string) int {
-	return findIndexOfDistinctCharacters(input, 14)
+	fmt.Println("Part 1: ", findIndexOfDistinctCharacters(input[0], 4))
+	fmt.Println("Part 2: ", findIndexOfDistinctCharacters(input[0], 14))
 }
 
 // Find index where the subsequent characters are all distinct
