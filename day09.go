@@ -34,13 +34,14 @@ type point struct {
 }
 
 func (p *point) move(direction string) {
-	if direction == "U" {
+	switch direction {
+	case "U":
 		p.y += 1
-	} else if direction == "D" {
+	case "D":
 		p.y -= 1
-	} else if direction == "R" {
+	case "R":
 		p.x += 1
-	} else if direction == "L" {
+	case "L":
 		p.x -= 1
 	}
 }
