@@ -37,6 +37,8 @@ func main() {
 		Day09(input)
 	case "10":
 		Day10(input)
+	case "11":
+		Day11(input)
 	default:
 		fmt.Printf("Problem %s not implemented\n", problem)
 	}
