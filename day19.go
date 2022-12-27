@@ -9,26 +9,29 @@ import (
 )
 
 func Day19(input []string) {
-	fmt.Println("Part 1: ", day19_part1(input))
-	fmt.Println("Part 2: ", day19_part2(input))
-}
-
-func day19_part1(input []string) int {
-	result := 0
-	for _, line := range input {
+	blueprints := make([]blueprint, len(input))
+	for i, line := range input {
 		bp, err := parseBlueprint(line)
 		if err != nil {
 			log.Fatal("Could not parse blueprint", err)
 		}
+		blueprints[i] = bp
+	}
+	fmt.Println("Part 1: ", day19_part1(blueprints))
+	fmt.Println("Part 2: ", day19_part2(blueprints))
+}
+
+func day19_part1(blueprints []blueprint) int {
+	result := 0
+	for _, bp := range blueprints {
 		result += bp.id * bp.calculateHighestGeodeLevel(24)
 	}
 	return result
 }
 
-func day19_part2(input []string) int {
+func day19_part2(blueprints []blueprint) int {
 	result := 1
-	for _, line := range input[:3] {
-		bp, _ := parseBlueprint(line)
+	for _, bp := range blueprints[:3] {
 		result *= bp.calculateHighestGeodeLevel(32)
 	}
 	return result
@@ -44,13 +47,16 @@ type robotCost struct {
 }
 
 func (bp blueprint) calculateHighestGeodeLevel(cycles int) int {
+	maxOreCost := max(bp.oreRobot.ore, bp.clayRobot.ore, bp.obsidianRobot.ore, bp.geodeRobot.ore)
+	maxClayCost := bp.obsidianRobot.clay
+	maxObsidianCost := bp.geodeRobot.obsidian
 	best := 0
 	queue := []robotState{{oreRobots: 1}}
 	for len(queue) > 0 {
 		state := queue[0]
 		queue = queue[1:]
 		possibleFutureStates := []robotState{}
-		if state.oreRobots < bp.maxOreCost() {
+		if state.oreRobots < maxOreCost {
 			requiredOre := max(0, bp.oreRobot.ore-state.ore)
 			time := (requiredOre+state.oreRobots-1)/state.oreRobots + 1
 			if state.cycle+time < cycles {
@@ -60,7 +66,7 @@ func (bp blueprint) calculateHighestGeodeLevel(cycles int) int {
 				possibleFutureStates = append(possibleFutureStates, cp)
 			}
 		}
-		if state.clayRobots < bp.maxClayCost() {
+		if state.clayRobots < maxClayCost {
 			requiredOre := max(0, bp.clayRobot.ore-state.ore)
 			time := (requiredOre+state.oreRobots-1)/state.oreRobots + 1
 			if state.cycle+time < cycles {
@@ -70,7 +76,7 @@ func (bp blueprint) calculateHighestGeodeLevel(cycles int) int {
 				possibleFutureStates = append(possibleFutureStates, cp)
 			}
 		}
-		if state.clayRobots > 0 && state.obsidianRobots < bp.maxObsidianCost() {
+		if state.clayRobots > 0 && state.obsidianRobots < maxObsidianCost {
 			requiredOre := max(0, bp.obsidianRobot.ore-state.ore)
 			requiredClay := max(0, bp.obsidianRobot.clay-state.clay)
 			time := max(
@@ -107,18 +113,6 @@ func (bp blueprint) calculateHighestGeodeLevel(cycles int) int {
 		}
 	}
 	return best
-}
-
-func (b blueprint) maxOreCost() int {
-	return max(b.oreRobot.ore, b.clayRobot.ore, b.obsidianRobot.ore, b.geodeRobot.ore)
-}
-
-func (b blueprint) maxClayCost() int {
-	return b.obsidianRobot.clay
-}
-
-func (b blueprint) maxObsidianCost() int {
-	return b.geodeRobot.obsidian
 }
 
 func parseBlueprint(line string) (blueprint, error) {
