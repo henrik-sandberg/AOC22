@@ -84,6 +84,6 @@ func buildNode(r rune, p point) *node {
 // appends b to edges of a, if possible to go from a to b
 func appendValidNode(a *node, b *node) {
 	if a.value >= b.value-1 {
-		a.edges = append(a.edges, b)
+		a.nodes = append(a.nodes, b)
 	}
 }

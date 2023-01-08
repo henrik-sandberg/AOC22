@@ -18,7 +18,7 @@ func day07_part1(n *node) int {
 	if n.value <= 100000 {
 		result = n.value
 	}
-	for _, v := range n.edges {
+	for _, v := range n.nodes {
 		result += day07_part1(v)
 	}
 	return result
@@ -29,7 +29,7 @@ func day07_part2(n *node, spaceToFree int) int {
 	if n.value < result && n.value >= spaceToFree {
 		result = n.value
 	}
-	for _, v := range n.edges {
+	for _, v := range n.nodes {
 		if res := day07_part2(v, spaceToFree); res < result && res >= spaceToFree {
 			result = res
 		}
@@ -49,13 +49,13 @@ func buildGraph(input []string) node {
 					root := node{name: target}
 					stack = append(stack, &root)
 				} else {
-					directory, _ := stack[len(stack)-1].getEdge(target)
+					directory, _ := stack[len(stack)-1].getNode(target)
 					stack = append(stack, directory)
 				}
 			}
 		} else if arr[0] == "dir" {
 			name := arr[1]
-			e := &stack[len(stack)-1].edges
+			e := &stack[len(stack)-1].nodes
 			(*e) = append((*e), &node{name: name})
 		} else {
 			size, _ := strconv.Atoi(arr[0])
