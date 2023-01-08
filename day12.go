@@ -11,7 +11,7 @@ func Day12(input []string) {
 	fmt.Println("Part 2: ", day12_part2(graph))
 }
 
-func day12_part1(graph []*node2) int {
+func day12_part1(graph []*node) int {
 	for _, n := range graph {
 		if n.name == "S" {
 			path := bfs(n, "E")
@@ -22,8 +22,9 @@ func day12_part1(graph []*node2) int {
 	return -1
 }
 
-func day12_part2(graph []*node2) int {
+func day12_part2(graph []*node) int {
 	res := math.MaxInt32
+	// This is a bit lazy for not keeping track of visits from previous runs
 	for _, n := range graph {
 		if n.value == 0 {
 			if path := bfs(n, "E"); len(path) > 0 {
@@ -34,9 +35,8 @@ func day12_part2(graph []*node2) int {
 	return res
 }
 
-func buildGraphDay12(input []string) (nodes []*node2) {
-	fmt.Printf("Building graph from %dx%d input\n", len(input), len(input[0]))
-	hills := map[point]*node2{}
+func buildGraphDay12(input []string) (nodes []*node) {
+	hills := map[point]*node{}
 	for r_ind, row := range input {
 		for c_ind, cell := range row {
 			p := point{r_ind, c_ind}
@@ -65,14 +65,7 @@ func buildGraphDay12(input []string) (nodes []*node2) {
 	return
 }
 
-// appends b to edges of a, if possible to go from a to b
-func appendValidNode(a *node2, b *node2) {
-	if a.value >= b.value-1 {
-		a.edges = append(a.edges, b)
-	}
-}
-
-func buildNode(r rune, p point) *node2 {
+func buildNode(r rune, p point) *node {
 	var name string
 	var elevation int
 	if r == 83 {
@@ -85,5 +78,12 @@ func buildNode(r rune, p point) *node2 {
 		name = fmt.Sprint(p)
 		elevation = int(r - 'a')
 	}
-	return &node2{value: elevation, name: name}
+	return &node{value: elevation, name: name}
+}
+
+// appends b to edges of a, if possible to go from a to b
+func appendValidNode(a *node, b *node) {
+	if a.value >= b.value-1 {
+		a.edges = append(a.edges, b)
+	}
 }

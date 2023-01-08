@@ -46,16 +46,17 @@ func buildGraph(input []string) node {
 				if target := arr[2]; target == ".." {
 					stack = stack[:len(stack)-1]
 				} else if target == "/" {
-					root := node{name: target, edges: map[string]*node{}}
+					root := node{name: target}
 					stack = append(stack, &root)
 				} else {
-					directory := stack[len(stack)-1].edges[target]
+					directory, _ := stack[len(stack)-1].getEdge(target)
 					stack = append(stack, directory)
 				}
 			}
 		} else if arr[0] == "dir" {
 			name := arr[1]
-			stack[len(stack)-1].edges[name] = &node{name: name, edges: map[string]*node{}}
+			e := &stack[len(stack)-1].edges
+			(*e) = append((*e), &node{name: name})
 		} else {
 			size, _ := strconv.Atoi(arr[0])
 			// Back propagating file size to root makes filtering much easier later
