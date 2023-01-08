@@ -7,12 +7,12 @@ func abs(i int) int {
 	return i
 }
 
-func max(n ...int) int {
-	high := n[0]
+func max(n ...int) (max int) {
+	max = n[0]
 	for _, v := range n[1:] {
-		if v > high {
-			high = v
+		if v > max {
+			max = v
 		}
 	}
-	return high
+	return
 }

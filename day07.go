@@ -7,12 +7,6 @@ import (
 	"strings"
 )
 
-type node struct {
-	name     string
-	children map[string]*node
-	value    int
-}
-
 func Day07(input []string) {
 	root := buildGraph(input)
 	fmt.Println("Part 1: ", day07_part1(&root))
@@ -24,7 +18,7 @@ func day07_part1(n *node) int {
 	if n.value <= 100000 {
 		result = n.value
 	}
-	for _, v := range n.children {
+	for _, v := range n.edges {
 		result += day07_part1(v)
 	}
 	return result
@@ -35,7 +29,7 @@ func day07_part2(n *node, spaceToFree int) int {
 	if n.value < result && n.value >= spaceToFree {
 		result = n.value
 	}
-	for _, v := range n.children {
+	for _, v := range n.edges {
 		if res := day07_part2(v, spaceToFree); res < result && res >= spaceToFree {
 			result = res
 		}
@@ -52,16 +46,16 @@ func buildGraph(input []string) node {
 				if target := arr[2]; target == ".." {
 					stack = stack[:len(stack)-1]
 				} else if target == "/" {
-					root := node{name: target, children: map[string]*node{}}
+					root := node{name: target, edges: map[string]*node{}}
 					stack = append(stack, &root)
 				} else {
-					directory := stack[len(stack)-1].children[target]
+					directory := stack[len(stack)-1].edges[target]
 					stack = append(stack, directory)
 				}
 			}
 		} else if arr[0] == "dir" {
 			name := arr[1]
-			stack[len(stack)-1].children[name] = &node{name: name, children: map[string]*node{}}
+			stack[len(stack)-1].edges[name] = &node{name: name, edges: map[string]*node{}}
 		} else {
 			size, _ := strconv.Atoi(arr[0])
 			// Back propagating file size to root makes filtering much easier later

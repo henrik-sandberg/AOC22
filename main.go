@@ -11,11 +11,10 @@ func main() {
 	if len(os.Args) > 2 {
 		fileName = os.Args[2]
 	} else {
-		fileName = "input/day" + problem + ".txt"
+		fileName = fmt.Sprintf("input/day%s.txt", problem)
 	}
-	input := ReadLines(fileName)
-
 	fmt.Printf("Running problem: %s with file: %s\n", problem, fileName)
+	input := ReadLines(fileName)
 	switch problem {
 	case "01":
 		Day01(input)
@@ -39,6 +38,8 @@ func main() {
 		Day10(input)
 	case "11":
 		Day11(input)
+	case "12":
+		Day12(input)
 	case "19":
 		Day19(input)
 	default:
