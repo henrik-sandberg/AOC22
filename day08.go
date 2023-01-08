@@ -119,13 +119,3 @@ func parseForest(input []string) [][]int {
 	}
 	return ret
 }
-
-func sum(arr [][]int) int {
-	result := 0
-	for _, row := range arr {
-		for _, cell := range row {
-			result += cell
-		}
-	}
-	return result
-}

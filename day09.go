@@ -29,10 +29,6 @@ func solveDay09(input []string, length int) int {
 	return len(Set(seen))
 }
 
-type point struct {
-	x, y int
-}
-
 func (p *point) move(direction string) {
 	switch direction {
 	case "U":

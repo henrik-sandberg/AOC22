@@ -2,42 +2,45 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 func Day12(input []string) {
-	root := buildGraphDay12(input)
-	fmt.Println("Part 1: ", day12_part1(root))
-	fmt.Println("Part 2: ", day12_part2())
+	graph := buildGraphDay12(input)
+	fmt.Println("Part 1: ", day12_part1(graph))
+	fmt.Println("Part 2: ", day12_part2(graph))
 }
 
-func day12_part1(graph *node2) int {
-	path := bfs(graph, "E")
-	return len(path) - 1
+func day12_part1(graph []*node2) int {
+	for _, n := range graph {
+		if n.name == "S" {
+			path := bfs(n, "E")
+			return len(path) - 1
+		}
+	}
+	fmt.Println("No starting point found")
+	return -1
 }
 
-func day12_part2() int {
-	return 0
+func day12_part2(graph []*node2) int {
+	res := math.MaxInt32
+	for _, n := range graph {
+		if n.value == 0 {
+			if path := bfs(n, "E"); len(path) > 0 {
+				res = min(res, len(path)-1)
+			}
+		}
+	}
+	return res
 }
 
-func buildGraphDay12(input []string) *node2 {
+func buildGraphDay12(input []string) (nodes []*node2) {
 	fmt.Printf("Building graph from %dx%d input\n", len(input), len(input[0]))
 	hills := map[point]*node2{}
-	var root *node2
 	for r_ind, row := range input {
 		for c_ind, cell := range row {
 			p := point{r_ind, c_ind}
-			hills[p] = &node2{value: calculateElevation(cell)}
-			// fmt.Println("Building graph at point", p, "with", hills[p])
-			if cell == 83 {
-				hills[p].name = "S"
-				root = hills[p]
-				fmt.Println("Found starting point", root, "at", p)
-			} else if cell == 69 {
-				hills[p].name = "E"
-				fmt.Println("Found target", hills[p], "at", p)
-			} else {
-				hills[p].name = fmt.Sprint(p)
-			}
+			hills[p] = buildNode(cell, p)
 		}
 	}
 	dirs := []struct{ rd, cd int }{
@@ -49,7 +52,6 @@ func buildGraphDay12(input []string) *node2 {
 	for r_ind, row := range input {
 		for c_ind := range row {
 			currentNode := hills[point{r_ind, c_ind}]
-			//fmt.Println("Begin comparing for cell", cell, "found at point", p, found)
 			for _, dir := range dirs {
 				if other, found := hills[point{r_ind + dir.rd, c_ind + dir.cd}]; found {
 					appendValidNode(currentNode, other)
@@ -57,8 +59,10 @@ func buildGraphDay12(input []string) *node2 {
 			}
 		}
 	}
-	fmt.Println("Returning graph root", root)
-	return root
+	for _, v := range hills {
+		nodes = append(nodes, v)
+	}
+	return
 }
 
 // appends b to edges of a, if possible to go from a to b
@@ -68,12 +72,18 @@ func appendValidNode(a *node2, b *node2) {
 	}
 }
 
-func calculateElevation(r rune) int {
+func buildNode(r rune, p point) *node2 {
+	var name string
+	var elevation int
 	if r == 83 {
-		return 0
+		name = "S"
+		elevation = 0
 	} else if r == 69 {
-		return int('z' - 'a')
+		name = "E"
+		elevation = int('z' - 'a')
 	} else {
-		return int(r - 'a')
+		name = fmt.Sprint(p)
+		elevation = int(r - 'a')
 	}
+	return &node2{value: elevation, name: name}
 }
