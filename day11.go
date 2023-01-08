@@ -48,9 +48,9 @@ func solveDay11(monkeys map[int]*monkey, rounds int, decayFunc func(int) int) in
 			}
 		}
 	}
-	insp := []int{}
-	for i := 0; i < len(monkeys); i++ {
-		insp = append(insp, monkeys[i].inspections)
+	insp := make([]int, len(monkeys))
+	for _, monkey := range monkeys {
+		insp = append(insp, monkey.inspections)
 	}
 	sort.Ints(insp)
 	return insp[len(insp)-1] * insp[len(insp)-2]

@@ -11,8 +11,7 @@ func Day10(input []string) {
 	fmt.Println("Part 2:", day10_part2(input))
 }
 
-func day10_part1(commands []string) int {
-	result := 0
+func day10_part1(commands []string) (result int) {
 	cycle := 1
 	register := 1
 	for _, cmd := range commands {
@@ -31,7 +30,7 @@ func day10_part1(commands []string) int {
 			result += cycle * register
 		}
 	}
-	return result
+	return
 }
 
 func day10_part2(commands []string) string {

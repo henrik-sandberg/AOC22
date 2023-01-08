@@ -46,11 +46,10 @@ type robotCost struct {
 	ore, clay, obsidian, geode int
 }
 
-func (bp blueprint) calculateHighestGeodeLevel(cycles int) int {
+func (bp blueprint) calculateHighestGeodeLevel(cycles int) (result int) {
 	maxOreCost := max(bp.oreRobot.ore, bp.clayRobot.ore, bp.obsidianRobot.ore, bp.geodeRobot.ore)
 	maxClayCost := bp.obsidianRobot.clay
 	maxObsidianCost := bp.geodeRobot.obsidian
-	best := 0
 	queue := []robotState{{oreRobots: 1}}
 	for len(queue) > 0 {
 		state := queue[0]
@@ -109,10 +108,10 @@ func (bp blueprint) calculateHighestGeodeLevel(cycles int) int {
 		if len(possibleFutureStates) > 0 {
 			queue = append(queue, possibleFutureStates...)
 		} else {
-			best = max(best, state.geode+(cycles-state.cycle)*state.geodeRobots)
+			result = max(result, state.geode+(cycles-state.cycle)*state.geodeRobots)
 		}
 	}
-	return best
+	return
 }
 
 func parseBlueprint(line string) (blueprint, error) {

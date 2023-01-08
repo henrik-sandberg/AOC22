@@ -27,7 +27,7 @@ func Day02(input []string) {
 	fmt.Println("Part 2: ", day02_part2(input, game_options))
 }
 
-func day02_part1(input []string, game_options map[string]game_option) int {
+func day02_part1(input []string, game_options map[string]game_option) (score int) {
 	mappings := make(map[string]string)
 	mappings["A"] = "rock"
 	mappings["B"] = "paper"
@@ -37,22 +37,19 @@ func day02_part1(input []string, game_options map[string]game_option) int {
 	mappings["Y"] = "paper"
 	mappings["Z"] = "scissor"
 
-	score := 0
-
 	for _, round := range input {
 		s := strings.Split(round, " ")
 		score += calculate_score(game_options[mappings[s[1]]], game_options[mappings[s[0]]])
 	}
-	return score
+	return
 }
 
-func day02_part2(input []string, game_options map[string]game_option) int {
+func day02_part2(input []string, game_options map[string]game_option) (score int) {
 	mappings := make(map[string]string)
 	mappings["A"] = "rock"
 	mappings["B"] = "paper"
 	mappings["C"] = "scissor"
 
-	score := 0
 	for _, round := range input {
 		s := strings.Split(round, " ")
 		they := game_options[mappings[s[0]]]
@@ -66,7 +63,7 @@ func day02_part2(input []string, game_options map[string]game_option) int {
 		}
 		score += calculate_score(us, they)
 	}
-	return score
+	return
 }
 
 func calculate_score(us game_option, they game_option) int {

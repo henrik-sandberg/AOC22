@@ -27,12 +27,11 @@ func max(n ...int) (max int) {
 	return
 }
 
-func sum(arr [][]int) int {
-	result := 0
+func sum(arr [][]int) (result int) {
 	for _, row := range arr {
 		for _, cell := range row {
 			result += cell
 		}
 	}
-	return result
+	return
 }
